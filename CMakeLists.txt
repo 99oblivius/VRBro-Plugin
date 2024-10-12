@@ -48,11 +48,9 @@ endif()
 
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE src/vrbro.cpp src/network/network.cpp src/config.cpp src/forms/server-settings.cpp src/handler/handler.cpp src/handler/events/request-handlers.cpp src/handler/events/event-handlers.cpp src/handler/errors/handle-errors.cpp)
 
-# Add include directories for Asio and nlohmann/json
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE 
-  ${asio_SOURCE_DIR}/include
-  ${json_SOURCE_DIR}/include
-)
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${json_SOURCE_DIR}/include)
+
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${asio_SOURCE_DIR}/asio/include)
 
 # Add compile definitions for Asio
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE ASIO_STANDALONE)
