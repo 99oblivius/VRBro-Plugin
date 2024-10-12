@@ -24,6 +24,9 @@ runs:
   using: composite
   steps:
     - name: Make build scripts executable
+      if: runner.os == 'macOS' || runner.os == 'Linux'
+      shell: bash
+      working-directory: ${{ inputs.workingDirectory }}
       run: |
         : Make build scripts executable
         chmod +x .github/scripts/build-linux
