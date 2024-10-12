@@ -11,6 +11,13 @@ include(compilerconfig)
 include(defaults)
 include(helpers)
 
+include(FetchContent)
+FetchContent_Declare(
+  asio
+  GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
+)
+FetchContent_MakeAvailable(asio)
+
 add_library(${CMAKE_PROJECT_NAME} MODULE)
 
 find_package(libobs REQUIRED)

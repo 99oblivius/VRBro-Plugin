@@ -1,6 +1,9 @@
 # Exclude everything
 /*
 
+# Asio
+build/_deps/asio-*
+
 # Except for default project files
 !/.github
 !/build-aux
