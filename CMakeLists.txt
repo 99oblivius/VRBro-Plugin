@@ -16,12 +16,10 @@ include(FetchContent)
 FetchContent_Declare(
   asio
   GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
-  GIT_TAG asio-1-24-0 # Replace with the version you want to use
 )
 FetchContent_Declare(
   json
   GIT_REPOSITORY https://github.com/nlohmann/json.git
-  GIT_TAG v3.11.2 # Replace with the version you want to use
 )
 FetchContent_MakeAvailable(asio json)
 
