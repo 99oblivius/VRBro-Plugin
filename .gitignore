@@ -1,8 +1,9 @@
 # Exclude everything
 /*
 
-# Asio
+# Dependencies
 build/_deps/asio-*
+build/_deps/json-*
 
 # Except for default project files
 !/.github

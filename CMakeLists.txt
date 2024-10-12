@@ -16,7 +16,11 @@ FetchContent_Declare(
   asio
   GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
 )
-FetchContent_MakeAvailable(asio)
+FetchContent_Declare(
+  json
+  GIT_REPOSITORY https://github.com/nlohmann/json.git
+)
+FetchContent_MakeAvailable(asio json)
 
 add_library(${CMAKE_PROJECT_NAME} MODULE)
 
@@ -42,5 +46,7 @@ if(ENABLE_QT)
 endif()
 
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE src/vrbro.cpp src/network/network.cpp src/config.cpp src/forms/server-settings.cpp src/handler/handler.cpp src/handler/events/request-handlers.cpp src/handler/events/event-handlers.cpp src/handler/errors/handle-errors.cpp)
+
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${asio_SOURCE_DIR}/include)
 
 set_target_properties_plugin(${CMAKE_PROJECT_NAME} PROPERTIES OUTPUT_NAME ${_name})
