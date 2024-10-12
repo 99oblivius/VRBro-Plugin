@@ -30,7 +30,6 @@ const char* obs_module_description() {
 }
 
 void vrbro_start_server() {
-    QMainWindow* main_window = (QMainWindow*)obs_frontend_get_main_window();
     obs_log(LOG_INFO, "[vrbro-server] Server Start!");
     _net->start();
 }
@@ -67,7 +66,7 @@ bool obs_module_load(void) {
         menu_action->connect(menu_action, &QAction::triggered, menu_cb);
 
         obs_frontend_add_event_callback(
-            [](enum obs_frontend_event event, void* private_data) {
+            [](enum obs_frontend_event event, void*) {
                 if (event == OBS_FRONTEND_EVENT_FINISHED_LOADING) {
                     config_t* obs_conf = obs_frontend_get_global_config();
                     if (config_get_bool(obs_conf, "VRBroServerPlugin", "AutoBufferBool") && !obs_frontend_replay_buffer_active()) {

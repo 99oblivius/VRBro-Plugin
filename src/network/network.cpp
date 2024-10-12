@@ -53,17 +53,17 @@ void Network::read_message(std::shared_ptr<asio::ip::tcp::socket> client_socket)
     auto buf = std::make_shared<asio::streambuf>();
     asio::async_read_until(*client_socket, *buf, "\n", [this, client_socket, buf](const asio::error_code& error, std::size_t) {
         std::string_view packet(asio::buffer_cast<const char*>(buf->data()), buf->size());
-        obs_log(LOG_INFO, "[message received]: %s", (std::string)packet);
+        obs_log(LOG_INFO, "[message received]: %s", packet.c_str());
         if (!error) {
             std::vector<uint8_t> response;
             std::error_code ec;
             CommandHandler::Handler(packet, response, ec);
 
-            if (ec) obs_log(LOG_INFO, "[Network::read_message] error: %s", ec.message());
+            if (ec) obs_log(LOG_INFO, "[Network::read_message] error: %s", ec.message().c_str());
             send_message(client_socket, response);
             if (is_running_) read_message(client_socket);
         } else {
-            obs_log(LOG_INFO, "[Network::read_message] Closing socket: %s", error.message());
+            obs_log(LOG_INFO, "[Network::read_message] Closing socket: %s", error.message().c_str());
             client_socket->close();
             active_clients_--;
         }

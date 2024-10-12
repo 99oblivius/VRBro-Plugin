@@ -15,10 +15,12 @@ namespace CommandHandler {
 
     namespace {
         void unknown_command(std::string& msg, std::error_code& ec) {
+            (void)(msg);
             ec = make_error_code(HandleError::UnknownCommand); 
         }
 
         void ping(std::string& msg, std::error_code& ec) {
+            (void)(ec);
             msg = "pong";
         }
 
