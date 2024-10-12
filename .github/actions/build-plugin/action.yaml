@@ -47,6 +47,8 @@ runs:
 
         if [[ '${{ inputs.codesign }}' == 'true' ]] build_args+=(--codesign)
 
+        ls
+        
         build-macos ${build_args}
 
     - name: Install Dependencies 🛍️
@@ -72,9 +74,7 @@ runs:
           --config ${{ inputs.config }}
         )
         if (( ${+RUNNER_DEBUG} )) build_args+=(--debug)
-        
-        ls
-        
+
         build-linux ${build_args}
 
     - name: Run Windows Build
