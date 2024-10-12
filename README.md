@@ -42,9 +42,11 @@ It works in tandem with a SteamVR overlay application to provide seamless contro
 
 ## Usage
 
-1. Ensure the VRBro Plugin is properly configured in OBS Studio.
-2. Launch your VR game and the companion SteamVR overlay.
-3. Use your configured VR controller bindings to send commands to OBS.
+1. Launch OBS with VRBro plugin installed 
+   a. (Help -> Log Files -> View Current Log) To verify the server is running successfully if issues arise. 
+2. Launch SteamVR.
+3. Launch VRBro Overlay.
+4. Use your VR controller bindings to send commands to OBS.
 
 ## Supported Commands
 
@@ -54,37 +56,11 @@ It works in tandem with a SteamVR overlay application to provide seamless contro
 - Save Replay Buffer
 - Split Recording File
 
-## Development
+## Contributing & Feedback
 
-This plugin is built using C++ and relies on the following libraries:
-
-- OBS Studio API
-- Asio (for asynchronous I/O)
-- nlohmann/json (for JSON parsing)
-
-To build the plugin from source:
-
-1. Clone the repository
-2. Ensure you have CMake and a C++ compiler installed
-3. Run the following commands:
-   ```
-   cmake -B build -S .
-   cmake --build build
-   ```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the [GNU General Public License v2.0](LICENSE).
+Contributions and or issues are welcome! Feel free to submit a Pull Request.
 
 ## Acknowledgements
 
 - OBS Studio team for their excellent software and API
 - Asio and nlohmann/json library authors
-
-## Contact
-
-For support, feature requests, or bug reports, please [open an issue](https://github.com/yourusername/vrbro-plugin/issues) on GitHub.
