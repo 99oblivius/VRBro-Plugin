@@ -47,21 +47,20 @@ build() {
   local buildspec_file=${project_root}/buildspec.json
 
   local host_os=""
-  while [[ $# -gt 0 ]]; do
-    case $1 in
-      --macos)
-        host_os="macos"
-        shift
-        ;;
-      --linux)
-        host_os="linux"
-        shift
-        ;;
-      *)
-        shift
-        ;;
-    esac
-  done
+  echo "First Argument: ${1}"
+  case $1 in
+    --macos)
+      host_os="macos"
+      shift
+      ;;
+    --linux)
+      host_os="linux"
+      shift
+      ;;
+    *)
+      shift
+      ;;
+  esac
 
   if [[ -z "$host_os" ]]; then
     echo "Error: Host OS not specified. Use --macos or --linux."
