@@ -29,6 +29,7 @@ runs:
       shell: bash
       run: |
         : Make scripts executable
+        chmod -R +x .github/scripts/utils.zsh
         chmod -R +x .github/scripts
 
     - name: Run macOS Build

@@ -48,7 +48,16 @@ build() {
   local buildspec_file=${project_root}/buildspec.json
 
   export fpath=("${SCRIPT_HOME}/utils.zsh" ${fpath})
-  autoload -Uz log_group log_info log_error log_output set_loglevel check_${host_os} setup_ccache
+  autoload -Uz ${SCRIPT_HOME}/utils.zsh/*(.:t)
+  # autoload -Uz log_group log_info log_error log_output set_loglevel check_${host_os} setup_ccache
+
+  # Verify function loading
+  if (( $+functions[check_macos] )); then
+    echo "check_macos function loaded successfully"
+  else
+    echo "Failed to load check_macos function"
+    return 1
+  fi
 
   if [[ ! -r ${buildspec_file} ]] {
     log_error \
