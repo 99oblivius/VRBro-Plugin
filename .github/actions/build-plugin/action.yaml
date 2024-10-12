@@ -35,7 +35,7 @@ runs:
     - name: Run macOS Build
       if: runner.os == 'macOS'
       shell: zsh --no-rcs --errexit --pipefail {0}
-      working-directory: ${{ inputs.workingDirectory }}
+      working-directory: ${{ inputs.workingDirectory }}/.github/scripts
       env:
         CODESIGN_IDENT: ${{ inputs.codesignIdent }}
         CODESIGN_TEAM: ${{ inputs.codesignTeam }}
@@ -46,8 +46,6 @@ runs:
         if (( ${+RUNNER_DEBUG} )) build_args+=(--debug)
 
         if [[ '${{ inputs.codesign }}' == 'true' ]] build_args+=(--codesign)
-
-        ls
 
         build-macos ${build_args}
 
@@ -65,7 +63,7 @@ runs:
     - name: Run Ubuntu Build
       if: runner.os == 'Linux'
       shell: zsh --no-rcs --errexit --pipefail {0}
-      working-directory: ${{ inputs.workingDirectory }}
+      working-directory: ${{ inputs.workingDirectory }}/.github/scripts
       run: |
         : Run Ubuntu Build
 
