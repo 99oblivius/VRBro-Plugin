@@ -7,6 +7,15 @@
 VRBro Plugin is an OBS Studio plugin designed to bridge the gap between virtual reality and content creation. 
 It works in tandem with a SteamVR overlay application to provide seamless control of OBS Studio directly from within VR.
 
+## Installation
+
+1. Download the latest release of the VRBro Plugin from the [Releases](https://github.com/99oblivius/VRBro-plugin/releases) page.
+2. Run the installer or extract the contents of the zip file to your OBS Studio plugins folder:
+   - Windows: `C:\Program Files\obs-studio\obs-plugins\64bit\`
+   - macOS: `/Applications/OBS.app/Contents/PlugIns/`
+   - Linux: `/usr/lib/obs-plugins/` or `~/.obs-studio/plugins/`
+3. Restart OBS Studio.
+
 ## GUI
 
 ![VRBro GUI](assets/VRBro_Server_Settings.png)
@@ -24,15 +33,6 @@ It works in tandem with a SteamVR overlay application to provide seamless contro
 2. A companion SteamVR overlay application (sold separately) connects to this WebSocket server.
 3. VR users can configure their VR controller bindings to send commands to OBS via the overlay.
 4. The plugin receives these commands and executes the corresponding actions in OBS Studio using the Frontend API.
-
-## Installation
-
-1. Download the latest release of the VRBro Plugin from the [Releases](https://github.com/99oblivius/VRBro-plugin/releases) page.
-2. Extract the contents of the zip file to your OBS Studio plugins folder:
-   - Windows: `C:\Program Files\obs-studio\obs-plugins\64bit\`
-   - macOS: `/Applications/OBS.app/Contents/PlugIns/`
-   - Linux: `/usr/lib/obs-plugins/` or `~/.obs-studio/plugins/`
-3. Restart OBS Studio.
 
 ## Configuration
 
