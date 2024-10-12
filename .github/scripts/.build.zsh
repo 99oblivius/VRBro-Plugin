@@ -43,6 +43,7 @@ TRAPZERR() {
 
 build() {
   if (( ! ${+SCRIPT_HOME} )) typeset -g SCRIPT_HOME=${ZSH_ARGZERO:A:h}
+  echo "THIS THING!!!!!!!!: ${(s:-:)ZSH_ARGZERO:t:r}"
   local host_os=${${(s:-:)ZSH_ARGZERO:t:r}[2]}
   local project_root=${SCRIPT_HOME:A:h:h}
   local buildspec_file=${project_root}/buildspec.json
@@ -52,9 +53,8 @@ build() {
   echo "Host OS: ${host_os}"
   echo "Project Root: ${project_root}"
 
-  export fpath=("${SCRIPT_HOME}/utils.zsh" ${fpath})
-  autoload -Uz ${SCRIPT_HOME}/utils.zsh/*(.:t)
-  # autoload -Uz log_group log_info log_error log_output set_loglevel check_${host_os} setup_ccache
+  fpath=("${SCRIPT_HOME}/utils.zsh" ${fpath})
+  autoload -Uz log_group log_info log_error log_output set_loglevel check_${host_os} setup_ccache
 
   if [[ ! -r ${buildspec_file} ]] {
     log_error \

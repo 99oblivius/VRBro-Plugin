@@ -35,7 +35,7 @@ runs:
     - name: Run macOS Build
       if: runner.os == 'macOS'
       shell: zsh --no-rcs --errexit --pipefail {0}
-      working-directory: ${{ inputs.workingDirectory }}/.github/scripts
+      working-directory: ${{ inputs.workingDirectory }}
       env:
         CODESIGN_IDENT: ${{ inputs.codesignIdent }}
         CODESIGN_TEAM: ${{ inputs.codesignTeam }}
@@ -47,9 +47,7 @@ runs:
 
         if [[ '${{ inputs.codesign }}' == 'true' ]] build_args+=(--codesign)
 
-        ls
-        
-        build-macos ${build_args}
+        .github/scripts/build-macos ${build_args}
 
     - name: Install Dependencies 🛍️
       if: runner.os == 'Linux'
@@ -65,7 +63,7 @@ runs:
     - name: Run Ubuntu Build
       if: runner.os == 'Linux'
       shell: zsh --no-rcs --errexit --pipefail {0}
-      working-directory: ${{ inputs.workingDirectory }}/.github/scripts
+      working-directory: ${{ inputs.workingDirectory }}
       run: |
         : Run Ubuntu Build
 
