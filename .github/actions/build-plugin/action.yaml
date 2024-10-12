@@ -23,6 +23,12 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Make build scripts executable
+      run: |
+        : Make build scripts executable
+        chmod +x .github/scripts/build-linux
+        chmod +x .github/scripts/build-macos
+    
     - name: Run macOS Build
       if: runner.os == 'macOS'
       shell: zsh --no-rcs --errexit --pipefail {0}
