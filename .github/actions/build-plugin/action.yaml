@@ -47,6 +47,8 @@ runs:
 
         if [[ '${{ inputs.codesign }}' == 'true' ]] build_args+=(--codesign)
 
+        ls
+
         build-macos ${build_args}
 
     - name: Install Dependencies 🛍️
