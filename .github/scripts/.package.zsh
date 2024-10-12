@@ -49,7 +49,7 @@ package() {
   local project_root=${SCRIPT_HOME:A:h:h}
   local buildspec_file=${project_root}/buildspec.json
 
-  export fpath=(${SCRIPT_HOME}/utils.zsh ${fpath})
+  fpath=("${SCRIPT_HOME}/utils.zsh" ${fpath})
   autoload -Uz set_loglevel log_info log_group log_error log_output check_${host_os}
 
   if [[ ! -r ${buildspec_file} ]] {

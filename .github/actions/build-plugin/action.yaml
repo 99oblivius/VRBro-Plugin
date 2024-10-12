@@ -23,17 +23,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Make build scripts executable
-      if: runner.os == 'macOS' || runner.os == 'Linux'
-      shell: bash
-      working-directory: ${{ inputs.workingDirectory }}
-      run: |
-        : Make build scripts executable
-        chmod +x .github/scripts/.build.zsh
-        chmod +x .github/scripts/.package.zsh
-        chmod +x .github/scripts/build-linux
-        chmod +x .github/scripts/build-macos
-    
     - name: Run macOS Build
       if: runner.os == 'macOS'
       shell: zsh --no-rcs --errexit --pipefail {0}
