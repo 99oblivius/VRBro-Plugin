@@ -24,7 +24,7 @@ runs:
   using: composite
   steps:
     - name: Make scripts executable
-      if: runner.os == 'macOS' || runner.is == 'Linus'
+      if: runner.os == 'macOS' || runner.is == 'Linux'
       working-directory: ${{ inputs.workingDirectory }}
       shell: bash
       run: |
