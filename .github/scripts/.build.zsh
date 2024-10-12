@@ -43,15 +43,30 @@ TRAPZERR() {
 
 build() {
   if (( ! ${+SCRIPT_HOME} )) typeset -g SCRIPT_HOME=${ZSH_ARGZERO:A:h}
-  echo "THIS THING!!!!!!!!: ${(s:-:)ZSH_ARGZERO:t:r}"
-  local host_os=${${(s:-:)ZSH_ARGZERO:t:r}[2]}
   local project_root=${SCRIPT_HOME:A:h:h}
   local buildspec_file=${project_root}/buildspec.json
 
-  # Debug output
-  echo "SCRIPT_HOME: ${SCRIPT_HOME}"
-  echo "Host OS: ${host_os}"
-  echo "Project Root: ${project_root}"
+  local host_os=""
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      --macos)
+        host_os="macos"
+        shift
+        ;;
+      --linux)
+        host_os="linux"
+        shift
+        ;;
+      *)
+        shift
+        ;;
+    esac
+  done
+
+  if [[ -z "$host_os" ]]; then
+    echo "Error: Host OS not specified. Use --macos or --linux."
+    return 1
+  fi
 
   fpath=("${SCRIPT_HOME}/utils.zsh" ${fpath})
   autoload -Uz log_group log_info log_error log_output set_loglevel check_${host_os} setup_ccache

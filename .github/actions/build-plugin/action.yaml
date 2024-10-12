@@ -46,6 +46,7 @@ runs:
         if (( ${+RUNNER_DEBUG} )) build_args+=(--debug)
 
         if [[ '${{ inputs.codesign }}' == 'true' ]] build_args+=(--codesign)
+        build+=(--macOS)
 
         .github/scripts/build-macos ${build_args}
 
@@ -72,6 +73,7 @@ runs:
           --config ${{ inputs.config }}
         )
         if (( ${+RUNNER_DEBUG} )) build_args+=(--debug)
+        build+=(--Linux)
 
         build-linux ${build_args}
 
