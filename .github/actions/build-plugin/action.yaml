@@ -72,7 +72,9 @@ runs:
           --config ${{ inputs.config }}
         )
         if (( ${+RUNNER_DEBUG} )) build_args+=(--debug)
-
+        
+        ls
+        
         build-linux ${build_args}
 
     - name: Run Windows Build
