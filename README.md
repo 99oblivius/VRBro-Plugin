@@ -7,6 +7,15 @@
 VRBro Plugin is an OBS Studio plugin designed to bridge the gap between virtual reality and content creation. 
 It works in tandem with a SteamVR overlay application to provide seamless control of OBS Studio directly from within VR.
 
+## Installation
+
+1. Download the latest release of the VRBro Plugin from the [Releases](https://github.com/99oblivius/VRBro-plugin/releases) page.
+2. Run the installer or extract the contents of the zip file to your OBS Studio plugins folder:
+   - Windows: `C:\Program Files\obs-studio\obs-plugins\64bit\`
+   - macOS: `/Applications/OBS.app/Contents/PlugIns/`
+   - Linux: `/usr/lib/obs-plugins/` or `~/.obs-studio/plugins/`
+3. Restart OBS Studio.
+
 ## GUI
 
 ![VRBro GUI](assets/VRBro_Server_Settings.png)
@@ -25,15 +34,6 @@ It works in tandem with a SteamVR overlay application to provide seamless contro
 3. VR users can configure their VR controller bindings to send commands to OBS via the overlay.
 4. The plugin receives these commands and executes the corresponding actions in OBS Studio using the Frontend API.
 
-## Installation
-
-1. Download the latest release of the VRBro Plugin from the [Releases](https://github.com/99oblivius/VRBro-plugin/releases) page.
-2. Extract the contents of the zip file to your OBS Studio plugins folder:
-   - Windows: `C:\Program Files\obs-studio\obs-plugins\64bit\`
-   - macOS: `/Applications/OBS.app/Contents/PlugIns/`
-   - Linux: `/usr/lib/obs-plugins/` or `~/.obs-studio/plugins/`
-3. Restart OBS Studio.
-
 ## Configuration
 
 1. In OBS Studio, go to Tools > VRBro Server Settings.
@@ -42,9 +42,11 @@ It works in tandem with a SteamVR overlay application to provide seamless contro
 
 ## Usage
 
-1. Ensure the VRBro Plugin is properly configured in OBS Studio.
-2. Launch your VR game and the companion SteamVR overlay.
-3. Use your configured VR controller bindings to send commands to OBS.
+1. Launch OBS with VRBro plugin installed 
+   a. (Help -> Log Files -> View Current Log) To verify the server is running successfully if issues arise. 
+2. Launch SteamVR.
+3. Launch VRBro Overlay.
+4. Use your VR controller bindings to send commands to OBS.
 
 ## Supported Commands
 
@@ -54,37 +56,11 @@ It works in tandem with a SteamVR overlay application to provide seamless contro
 - Save Replay Buffer
 - Split Recording File
 
-## Development
+## Contributing & Feedback
 
-This plugin is built using C++ and relies on the following libraries:
-
-- OBS Studio API
-- Asio (for asynchronous I/O)
-- nlohmann/json (for JSON parsing)
-
-To build the plugin from source:
-
-1. Clone the repository
-2. Ensure you have CMake and a C++ compiler installed
-3. Run the following commands:
-   ```
-   cmake -B build -S .
-   cmake --build build
-   ```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the [GNU General Public License v2.0](LICENSE).
+Contributions and or issues are welcome! Feel free to submit a Pull Request.
 
 ## Acknowledgements
 
 - OBS Studio team for their excellent software and API
 - Asio and nlohmann/json library authors
-
-## Contact
-
-For support, feature requests, or bug reports, please [open an issue](https://github.com/yourusername/vrbro-plugin/issues) on GitHub.
