@@ -30,14 +30,9 @@ runs:
       run: |
         : Make scripts executable
         find .github/scripts -type f \( -name "*.sh" -o -name "*.zsh" -o -name "build-*" -o -name "package-*" -o -name "utils*" \) -exec chmod +x {} +
-        
-        # Verify permissions
-        echo "Executable files:"
-        find .github/scripts -type f -executable -print
-
-        # List all files in .github/scripts for debugging
-        echo "All files in .github/scripts:"
+        find .github/scripts -type f -perm /111 -print
         ls -la .github/scripts
+        cat .github/scripts/utils.zsh
 
     - name: Run macOS Build
       if: runner.os == 'macOS'
