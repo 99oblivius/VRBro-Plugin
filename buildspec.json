@@ -14,7 +14,7 @@
             "baseUrl": "https://github.com/obsproject/obs-deps/releases/download",
             "label": "Pre-Built obs-deps",
             "hashes": {
-                "macos": "2e9bfb55a5e0e4c1086fa1fda4cf268debfead473089df2aaea80e1c7a3ca7ff",
+                "macos": "d637141e6082106b6c8d67b8bf64175739bddb1f31a324c77e8fbf8488b7c33c",
                 "windows-x64": "85a45cacca0853fef9444b6e99c529e81ce896ce3e3318edf458fd7ad78eed89"
             }
         },
