@@ -42,11 +42,13 @@ runs:
       run: |
         : Run macOS Build
 
-        local -a build_args=(--config ${{ inputs.config }})
+        local -a build_args=(
+          --macos
+          --config ${{ inputs.config }}
+        )
         if (( ${+RUNNER_DEBUG} )) build_args+=(--debug)
 
         if [[ '${{ inputs.codesign }}' == 'true' ]] build_args+=(--codesign)
-        build_args+=(--macos)
 
         .github/scripts/build-macos ${build_args}
 
@@ -69,11 +71,11 @@ runs:
         : Run Ubuntu Build
 
         local -a build_args=(
+          --linux
           --target linux-${{ inputs.target }}
           --config ${{ inputs.config }}
         )
         if (( ${+RUNNER_DEBUG} )) build_args+=(--debug)
-        build_args+=(--linux)
 
         build-linux ${build_args}
 
