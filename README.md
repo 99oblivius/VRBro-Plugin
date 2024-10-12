@@ -1,10 +1,14 @@
 # VRBro Plugin for OBS Studio
 
-![VRBro Banner](assets/vrbro-banner.png)
+![VRBro Banner](assets/VRBro_banner.png)
 
 ## Introduction
 
 VRBro Plugin is an Open Broadcaster Software (OBS) Studio plugin designed to bridge the gap between virtual reality (VR) gaming and live streaming. It works in tandem with a SteamVR overlay application to provide seamless control of OBS Studio directly from within VR environments.
+
+## GUI
+
+![VRBro GUI](assets/VRBro_Server_Settings.png)
 
 ## Features
 
