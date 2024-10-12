@@ -33,7 +33,7 @@
     },
     "platformConfig": {
         "macos": {
-            "bundleId": "com.example.obs-plugintemplate"
+            "bundleId": "dev.oblivius.vrbro"
         }
     },
     "name": "vrbro",
@@ -43,6 +43,6 @@
     "website": "https://github.com/99oblivius",
     "email": "projects@oblivius.dev",
     "uuids": {
-        "windowsApp": "00000000-0000-0000-0000-000000000000"
+        "windowsApp": "949a6046-2017-4ec3-9e23-62bbc26a7f80"
     }
 }
