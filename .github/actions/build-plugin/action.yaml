@@ -29,12 +29,12 @@ runs:
       shell: bash
       run: |
         : Make scripts executable
-        chown +x .github/scripts/.build.zsh
-        chown +x .github/scripts/.package.zsh
-        chown +x .github/scripts/build-macos
-        chown +x .github/scripts/build-linux
-        chown +x .github/scripts/package-macos
-        chown +x .github/scripts/package-linux
+        chmod +x .github/scripts/.build.zsh
+        chmod +x .github/scripts/.package.zsh
+        chmod +x .github/scripts/build-macos
+        chmod +x .github/scripts/build-linux
+        chmod +x .github/scripts/package-macos
+        chmod +x .github/scripts/package-linux
 
     - name: Run macOS Build
       if: runner.os == 'macOS'
