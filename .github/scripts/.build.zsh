@@ -46,24 +46,32 @@ build() {
   local project_root=${SCRIPT_HOME:A:h:h}
   local buildspec_file=${project_root}/buildspec.json
 
-  # Process all arguments except the last one
-  local -a args=("$@")
-  local host_os=${args[-1]}
-  unset 'args[-1]'
+  # Initialize host_os
+  local host_os=""
+
+  # Function to process arguments
+  process_args() {
+    while (( $# > 0 )); do
+      case $1 in
+        --macos)
+          host_os="macos"
+          ;;
+        --linux)
+          host_os="linux"
+          ;;
+      esac
+      shift
+    done
+  }
+
+  # Process arguments to set host_os, but don't consume them
+  process_args "$@"
 
   # Validate host_os
-  case $host_os in
-    --macos)
-      host_os="macos"
-      ;;
-    --linux)
-      host_os="linux"
-      ;;
-    *)
-      echo "Error: Invalid or missing host OS. Last argument must be --macos or --linux."
-      return 1
-      ;;
-  esac
+  if [[ -z "$host_os" ]]; then
+    echo "Error: Host OS not specified. Use --macos or --linux as one of the arguments."
+    return 1
+  fi
 
   fpath=("${SCRIPT_HOME}/utils.zsh" ${fpath})
   autoload -Uz log_group log_info log_error log_output set_loglevel check_${host_os} setup_ccache
