@@ -23,7 +23,7 @@
             "baseUrl": "https://github.com/obsproject/obs-deps/releases/download",
             "label": "Pre-Built Qt6",
             "hashes": {
-                "macos": "694f1e639c017e3b1f456f735330dc5afae287cbea85757101af1368de3142c8",
+                "macos": "12b6f45f5d44715b1e434c1fba00d21680d4d0b529a2e900e206d96ed4bb66ae",
                 "windows-x64": "0344d771dd36d42b2f13e76268c2d7c03152f6fd822e90c8124e27785a966658"
             },
             "debugSymbols": {
