@@ -29,7 +29,7 @@ runs:
       shell: bash
       run: |
         : Make scripts executable
-        chmod +x .github/scripts/*
+        chmod -R +x .github/scripts
 
     - name: Run macOS Build
       if: runner.os == 'macOS'
