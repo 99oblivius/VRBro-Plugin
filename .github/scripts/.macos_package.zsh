@@ -45,9 +45,10 @@ TRAPZERR() {
 
 package() {
   if (( ! ${+SCRIPT_HOME} )) typeset -g SCRIPT_HOME=${ZSH_ARGZERO:A:h}
-  local host_os=${${(s:-:)ZSH_ARGZERO:t:r}[2]}
   local project_root=${SCRIPT_HOME:A:h:h}
   local buildspec_file=${project_root}/buildspec.json
+
+  local host_os="macos"
 
   fpath=("${SCRIPT_HOME}/utils.zsh" ${fpath})
   autoload -Uz set_loglevel log_info log_group log_error log_output check_${host_os}
