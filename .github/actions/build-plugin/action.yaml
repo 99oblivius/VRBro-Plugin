@@ -75,7 +75,7 @@ runs:
         )
         if (( ${+RUNNER_DEBUG} )) build_args+=(--debug)
 
-        build-linux ${build_args}
+        .github/scripts/build-linux ${build_args}
 
     - name: Run Windows Build
       if: runner.os == 'Windows'
