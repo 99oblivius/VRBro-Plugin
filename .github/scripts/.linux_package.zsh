@@ -47,7 +47,7 @@ package() {
   if (( ! ${+SCRIPT_HOME} )) typeset -g SCRIPT_HOME=${ZSH_ARGZERO:A:h}
   local project_root=${SCRIPT_HOME:A:h:h}
   local buildspec_file=${project_root}/buildspec.json
-
+  
   local host_os="linux"
 
   fpath=("${SCRIPT_HOME}/utils.zsh" ${fpath})
@@ -141,7 +141,7 @@ ${_usage_host:-}"
         shift 2
         ;;
       -s|--codesign) typeset -g codesign=1; shift ;;
-      -n|--notarize) typeset -g notarize=0; typeset -g codesign=1; shift ;;
+      -n|--notarize) typeset -g notarize=1; typeset -g codesign=1; shift ;;
       -p|--package) typeset -g package=1; shift ;;
       --skip-deps) typeset -g skip_deps=1; shift ;;
       -q|--quiet) (( verbosity -= 1 )) || true; shift ;;
