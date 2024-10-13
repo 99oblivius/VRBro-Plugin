@@ -11,7 +11,6 @@ include(compilerconfig)
 include(defaults)
 include(helpers)
 
-# Add FetchContent for Asio and nlohmann/json
 include(FetchContent)
 FetchContent_Declare(
   asio
@@ -26,7 +25,11 @@ FetchContent_MakeAvailable(asio json)
 add_library(${CMAKE_PROJECT_NAME} MODULE)
 
 find_package(libobs REQUIRED)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::libobs ws2_32 nlohmann_json::nlohmann_json)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::libobs nlohmann_json::nlohmann_json)
+
+if(WIN32)
+  target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ws2_32)
+endif()
 
 if(ENABLE_FRONTEND_API)
   find_package(obs-frontend-api REQUIRED)
@@ -46,13 +49,20 @@ if(ENABLE_QT)
                AUTORCC ON)
 endif()
 
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE src/vrbro.cpp src/network/network.cpp src/config.cpp src/forms/server-settings.cpp src/handler/handler.cpp src/handler/events/request-handlers.cpp src/handler/events/event-handlers.cpp src/handler/errors/handle-errors.cpp)
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE 
+  src/vrbro.cpp 
+  src/network/network.cpp 
+  src/config.cpp 
+  src/forms/server-settings.cpp 
+  src/handler/handler.cpp 
+  src/handler/events/request-handlers.cpp 
+  src/handler/events/event-handlers.cpp 
+  src/handler/errors/handle-errors.cpp
+)
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${json_SOURCE_DIR}/include)
-
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${asio_SOURCE_DIR}/asio/include)
 
-# Add compile definitions for Asio
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE ASIO_STANDALONE)
 
 set_target_properties_plugin(${CMAKE_PROJECT_NAME} PROPERTIES OUTPUT_NAME ${_name})
