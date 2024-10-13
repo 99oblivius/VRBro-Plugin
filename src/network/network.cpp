@@ -1,4 +1,7 @@
 #include <iostream>
+#include <bitset>
+#include <cstdint>
+#include <cstdio>
 #include <obs-module.h>
 
 #include "plugin-support.h"
