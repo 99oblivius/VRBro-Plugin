@@ -8,6 +8,7 @@ void CommandHandler::Handler(std::string_view& packet, std::vector<uint8_t>& res
     std::string msg = "";
 
     uint8_t header = 0;
+    int success_flag = 0;
 
     if (packet.empty()) {
         action = 0xFF;
@@ -21,12 +22,14 @@ void CommandHandler::Handler(std::string_view& packet, std::vector<uint8_t>& res
         if ((uint8_t)packet[0] & 0x80) {
             EventHandler(packet, action, msg, ec);
             header |= 1 << 7;
+            success_flag = (bool)ec ? 0 : 1;
         } else {
             RequestHandler(packet, action, msg, ec);
+            success_flag = msg.empty() ? 0 : 1;
         }
     }
 
-    header |= ((msg.empty() ? 0 : 1) | (bool)ec ? 0 : 1) << 6;
+    header |= success_flag << 6;
     header |= static_cast<uint8_t>(action) & 0x3F;
     response.push_back(header);
     
