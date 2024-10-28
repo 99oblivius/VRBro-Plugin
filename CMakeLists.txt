@@ -20,6 +20,7 @@ FetchContent_Declare(
   json
   GIT_REPOSITORY https://github.com/nlohmann/json.git
 )
+
 FetchContent_MakeAvailable(asio json)
 
 add_library(${CMAKE_PROJECT_NAME} MODULE)
@@ -40,23 +41,22 @@ if(ENABLE_QT)
   find_package(Qt6 COMPONENTS Widgets Core)
   target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt6::Core Qt6::Widgets)
   target_compile_options(
-    ${CMAKE_PROJECT_NAME} PRIVATE $<$<C_COMPILER_ID:Clang,AppleClang>:-Wno-quoted-include-in-framework-header
-                                  -Wno-comma>)
+    ${CMAKE_PROJECT_NAME} PRIVATE $<$<C_COMPILER_ID:Clang,AppleClang>:-Wno-quoted-include-in-framework-header-Wno-comma>)
   set_target_properties(
     ${CMAKE_PROJECT_NAME}
     PROPERTIES AUTOMOC ON
-               AUTOUIC ON
-               AUTORCC ON)
+    AUTOUIC ON
+    AUTORCC ON)
 endif()
 
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE 
-  src/vrbro.cpp 
-  src/network/network.cpp 
-  src/config.cpp 
-  src/forms/server-settings.cpp 
-  src/handler/handler.cpp 
-  src/handler/events/request-handlers.cpp 
-  src/handler/events/event-handlers.cpp 
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+  src/vrbro.cpp
+  src/network/network.cpp
+  src/config.cpp
+  src/forms/server-settings.cpp
+  src/handler/handler.cpp
+  src/handler/events/request-handlers.cpp
+  src/handler/events/event-handlers.cpp
   src/handler/errors/handle-errors.cpp
 )
 

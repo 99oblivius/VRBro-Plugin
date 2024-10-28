@@ -11,7 +11,7 @@
 #include "events/request-handlers.hpp"
 
 namespace CommandHandler {
-    void Handler(std::string_view& packet, std::vector<uint8_t>& response, std::error_code& ec);
+    void Handler(std::string_view packet, std::vector<uint8_t>& response, std::error_code& ec);
 
     namespace {
         void unknown_command(std::string& msg, std::error_code& ec) {
