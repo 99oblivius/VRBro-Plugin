@@ -3,7 +3,7 @@
 #include "events/request-handlers.hpp"
 #include "handler.hpp"
 
-void CommandHandler::Handler(std::string_view& packet, std::vector<uint8_t>& response, std::error_code& ec) {
+void CommandHandler::Handler(std::string_view packet, std::vector<uint8_t>& response, std::error_code& ec) {
     ActionType action = 0xFF;
     std::string msg = "";
 

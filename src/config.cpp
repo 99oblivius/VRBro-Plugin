@@ -8,7 +8,7 @@
 #include <fstream>
 
 #include "config.hpp"
-#include "json.hpp"
+#include <nlohmann/json.hpp>
 #include "vrbro.hpp"
 
 using json = nlohmann::json;

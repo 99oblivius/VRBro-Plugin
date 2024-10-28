@@ -1,13 +1,12 @@
 #include <iostream>
 #include <bitset>
 #include <cstdint>
+#include <asio.hpp>
 #include <cstdio>
 #include <obs-module.h>
-
 #include "plugin-support.h"
 #include "network.hpp"
 #include "../handler/handler.hpp"
-
 using json = nlohmann::json;
 
 Network::Network(const std::string& address, int port, std::size_t max_clients) : 
@@ -21,7 +20,6 @@ Network::~Network() {
 void Network::start() {
     is_running_ = true;
     accept_connections();
-
     io_thread_ = std::thread([this]() {
         io_context_.run();
     });
@@ -52,32 +50,54 @@ void Network::handle_accept(const asio::error_code& error, std::shared_ptr<asio:
         accept_connections();
     }
 }
+
 void Network::read_message(std::shared_ptr<asio::ip::tcp::socket> client_socket) {
     auto buf = std::make_shared<asio::streambuf>();
-    asio::async_read_until(*client_socket, *buf, "\n", [this, client_socket, buf](const asio::error_code& error, std::size_t) {
-        std::string_view packet(asio::buffer_cast<const char*>(buf->data()), buf->size());
-        if (!error) {
-            std::vector<uint8_t> response;
-            std::error_code ec;
-            CommandHandler::Handler(packet, response, ec);
-            if (ec) obs_log(LOG_INFO, "[Network::read_message] error: %s", ec.message().c_str());
-            send_message(client_socket, response);
-            if (is_running_) read_message(client_socket);
-        } else {
-            obs_log(LOG_INFO, "[Network::read_message] Closing socket: %s", error.message().c_str());
-            client_socket->close();
-            active_clients_--;
-        }
-    });
+    asio::async_read_until(*client_socket, *buf, '\n',
+        [this, client_socket, buf](const asio::error_code& error, std::size_t bytes_transferred) {
+            if (!error) {
+                std::string packet_data;
+                packet_data.resize(bytes_transferred);
+                std::istream is(buf.get());
+                is.read(&packet_data[0], bytes_transferred);
+
+                if (!packet_data.empty() && packet_data.back() == '\n') {
+                    packet_data.pop_back();
+                }
+
+                std::vector<uint8_t> response;
+                std::error_code ec;
+                CommandHandler::Handler(packet_data, response, ec);
+                
+                if (ec) {
+                    obs_log(LOG_INFO, "[Network::read_message] error: %s", ec.message().c_str());
+                }
+                
+                send_message(client_socket, response);
+                
+                if (is_running_) {
+                    read_message(client_socket);
+                }
+            } else {
+                obs_log(LOG_INFO, "[Network::read_message] Closing socket: %s", error.message().c_str());
+                client_socket->close();
+                active_clients_--;
+            }
+        });
 }
 
 void Network::send_message(std::shared_ptr<asio::ip::tcp::socket> client_socket, const std::vector<uint8_t>& packet) {
     auto message_buf = std::make_shared<std::string>(packet.begin(), packet.end());
-    asio::async_write(*client_socket, asio::buffer(*message_buf), [message_buf, this, client_socket](const asio::error_code& error, std::size_t) {
-        if (error) {
-            obs_log(LOG_INFO, "[Network::send_message] Error sending message: %s", error.message().c_str());
-            client_socket->close();
-            active_clients_--;
-        }
-    });
+    message_buf->push_back('\n');
+
+    asio::async_write(
+        *client_socket,
+        asio::buffer(*message_buf),
+        [this, client_socket, message_buf](const asio::error_code& error, std::size_t) {
+            if (error) {
+                obs_log(LOG_INFO, "[Network::send_message] Error sending message: %s", error.message().c_str());
+                client_socket->close();
+                active_clients_--;
+            }
+        });
 }

@@ -1,14 +1,11 @@
 #ifndef NETWORK_HPP
 #define NETWORK_HPP
 
+#include <asio.hpp>
 #include <string>
 #include <thread>
-#include <vector>
 #include <memory>
-#include <atomic>
-#include <asio.hpp>
-#include <nlohmann/json.hpp>
-#include <obs-frontend-api.h>
+#include <vector>
 
 class Network {
 public:
@@ -29,6 +26,7 @@ private:
     std::size_t max_clients_;
     std::atomic<std::size_t> active_clients_;
     std::atomic<bool> is_running_;
+    
     asio::io_context io_context_;
     asio::ip::tcp::acceptor acceptor_;
     std::thread io_thread_;
