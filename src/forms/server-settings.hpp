@@ -1,5 +1,4 @@
-#ifndef SERVERSETTINGS_H
-#define SERVERSETTINGS_H
+#pragma once
 
 #include <QDialog>
 
@@ -21,5 +20,3 @@ private slots:
 private:
 	Ui::ServerSettings *ui;
 };
-
-#endif

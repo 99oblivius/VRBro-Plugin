@@ -1,6 +1,8 @@
 #pragma once
 
-typedef uint8_t ActionType;
+#include <cstdint>
+
+using ActionType = uint8_t;
 
 enum class ActionTypeEvent : uint8_t {
     PING = 0,

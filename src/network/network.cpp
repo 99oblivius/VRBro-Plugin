@@ -1,17 +1,22 @@
-#include <iostream>
-#include <bitset>
-#include <cstdint>
-#include <asio.hpp>
-#include <cstdio>
-#include <obs-module.h>
-#include "plugin-support.h"
 #include "network.hpp"
-#include "../handler/handler.hpp"
-using json = nlohmann::json;
+
+#include <istream>
+#include <string>
+#include <utility>
+
+#include <asio.hpp>
+#include <obs-module.h>
+
+#include "handler/command-handler.hpp"
+#include "plugin-support.h"
 
 Network::Network(const std::string& address, int port, std::size_t max_clients) : 
-    address_(address), port_(port), max_clients_(max_clients), active_clients_(0),
-    is_running_(false), acceptor_(io_context_, asio::ip::tcp::endpoint(asio::ip::make_address(address), port)) {}
+    address_(address),
+    port_(port),
+    max_clients_(max_clients),
+    active_clients_(0),
+    is_running_(false),
+    acceptor_(io_context_, asio::ip::tcp::endpoint(asio::ip::make_address(address), port)) {}
 
 Network::~Network() {
     shutdown();

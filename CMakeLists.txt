@@ -53,8 +53,8 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
   src/vrbro.cpp
   src/network/network.cpp
   src/config.cpp
+  src/handler/command-handler.cpp
   src/forms/server-settings.cpp
-  src/handler/handler.cpp
   src/handler/events/request-handlers.cpp
   src/handler/events/event-handlers.cpp
   src/handler/errors/handle-errors.cpp
