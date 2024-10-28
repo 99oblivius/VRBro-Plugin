@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NETWORK_HPP
+#define NETWORK_HPP
 
 #include <asio.hpp>
 #include <string>
@@ -30,3 +31,5 @@ private:
     asio::ip::tcp::acceptor acceptor_;
     std::thread io_thread_;
 };
+
+#endif

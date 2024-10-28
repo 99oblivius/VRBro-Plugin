@@ -63,6 +63,6 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${json_SOURCE_DIR}/include)
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${asio_SOURCE_DIR}/asio/include)
 
-target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE ASIO_STANDALONE)
+target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE ASIO_STANDALONE _WIN32_WINNT=0x0601)
 
 set_target_properties_plugin(${CMAKE_PROJECT_NAME} PROPERTIES OUTPUT_NAME ${_name})

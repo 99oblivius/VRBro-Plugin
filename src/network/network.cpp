@@ -56,18 +56,15 @@ void Network::read_message(std::shared_ptr<asio::ip::tcp::socket> client_socket)
     asio::async_read_until(*client_socket, *buf, '\n',
         [this, client_socket, buf](const asio::error_code& error, std::size_t bytes_transferred) {
             if (!error) {
-                // Convert streambuf to string without using buffer_cast
                 std::string packet_data;
                 packet_data.resize(bytes_transferred);
                 std::istream is(buf.get());
                 is.read(&packet_data[0], bytes_transferred);
 
-                // Remove the delimiter if it exists
                 if (!packet_data.empty() && packet_data.back() == '\n') {
                     packet_data.pop_back();
                 }
 
-                // Process the message
                 std::vector<uint8_t> response;
                 std::error_code ec;
                 CommandHandler::Handler(packet_data, response, ec);
@@ -90,14 +87,13 @@ void Network::read_message(std::shared_ptr<asio::ip::tcp::socket> client_socket)
 }
 
 void Network::send_message(std::shared_ptr<asio::ip::tcp::socket> client_socket, const std::vector<uint8_t>& packet) {
-    // Create a shared pointer to hold the data while the async operation completes
     auto message_buf = std::make_shared<std::string>(packet.begin(), packet.end());
-    message_buf->push_back('\n');  // Add delimiter
+    message_buf->push_back('\n');
 
     asio::async_write(
         *client_socket,
         asio::buffer(*message_buf),
-        [this, client_socket, message_buf](const asio::error_code& error, std::size_t /*bytes_transferred*/) {
+        [this, client_socket, message_buf](const asio::error_code& error, std::size_t) {
             if (error) {
                 obs_log(LOG_INFO, "[Network::send_message] Error sending message: %s", error.message().c_str());
                 client_socket->close();
