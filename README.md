@@ -5,7 +5,7 @@
 ## Introduction
 
 VRBro Plugin is an OBS Studio plugin designed to bridge the gap between virtual reality and content creation. 
-It works in tandem with a SteamVR overlay application to provide seamless control of OBS Studio directly from within VR.
+It works in tandem with a SteamVR overlay application ([WIP](https://github.com/99oblivius/VRBro-Overlay)) to provide seamless control of OBS Studio directly from within VR.
 
 ## Installation
 
