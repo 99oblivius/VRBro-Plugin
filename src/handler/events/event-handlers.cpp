@@ -78,4 +78,21 @@ void recording_split_file(std::string& msg, handle_error& ec) {
     }
 }
 
+void set_scene(std::string& payload, handle_error& ec) {
+    if (payload.empty()) {
+        ec = make_error_code(HandleError::SceneError); 
+        return;
+    }
+
+    obs_source_t* scene = obs_get_source_by_name(payload.c_str());
+    if (!scene) {
+        ec = make_error_code(HandleError::SceneError);
+        return;
+    }
+
+    obs_frontend_set_current_scene(scene);
+    obs_source_release(scene);
+    payload.clear();
+}
+
 } // namespace EventHandler

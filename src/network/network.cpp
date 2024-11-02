@@ -61,6 +61,7 @@ void Network::read_message(std::shared_ptr<asio::ip::tcp::socket> client_socket)
     asio::async_read_until(*client_socket, *buf, '\n',
         [this, client_socket, buf](const asio::error_code& error, std::size_t bytes_transferred) {
             if (!error) {
+                std::string payload;
                 std::string packet_data;
                 packet_data.resize(bytes_transferred);
                 std::istream is(buf.get());

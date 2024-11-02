@@ -16,4 +16,5 @@ namespace EventHandler {
     void start_streaming(std::string& msg, handle_error& ec);
     void stop_streaming(std::string& msg, handle_error& ec);
     void recording_split_file(std::string& msg, handle_error& ec);
+    void set_scene(std::string& msg, handle_error& ec);
 }

@@ -12,6 +12,7 @@ enum class HandleError {
     ReplayBufferError,
     RecordingError,
     StreamingError,
+    SceneError
 };
 
 class HandleErrorCategory final : public std::error_category {

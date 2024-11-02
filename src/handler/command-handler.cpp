@@ -31,6 +31,12 @@ namespace {
             case ActionTypeRequest::STREAMING_ACTIVE:
                 RequestHandler::is_streaming(msg, ec);
                 break;
+            case ActionTypeRequest::GET_CURRENT_SCENE:
+                RequestHandler::get_current_scene(msg, ec);
+                break;
+            case ActionTypeRequest::GET_SCENES:
+                RequestHandler::get_scenes(msg, ec);
+                break;
             default:
                 unknown_command(msg, ec);
                 break;
@@ -39,6 +45,10 @@ namespace {
 
     void handle_event(std::string_view& packet, ActionType& action, std::string& msg, std::error_code& ec) {
         action = static_cast<uint8_t>(packet[0]) & 0x3F;
+        std::string payload;
+        if (packet.length() > 1) {
+            payload = std::string(packet.substr(1));
+        }
         switch (static_cast<ActionTypeEvent>(action)) {
             case ActionTypeEvent::PING:
                 ping(msg, ec);
@@ -66,6 +76,9 @@ namespace {
                 break;
             case ActionTypeEvent::RECORDING_SPLIT_FILE:
                 EventHandler::recording_split_file(msg, ec);
+                break;
+            case ActionTypeEvent::SET_SCENE:
+                EventHandler::set_scene(payload, ec);
                 break;
             default:
                 unknown_command(msg, ec);
@@ -102,6 +115,7 @@ namespace CommandHandler {
         }
 
         header |= success_flag << 6;
+        
         header |= static_cast<uint8_t>(action) & 0x3F;
         response.push_back(header);
         
