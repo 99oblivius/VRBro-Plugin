@@ -35,6 +35,8 @@ public:
                 return "Recording error";
             case HandleError::StreamingError:
                 return "Streaming error";
+            case HandleError::SceneError:
+                return "Scene Error";
             default:
                 return "Unknown error";
         }

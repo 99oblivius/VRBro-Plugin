@@ -43,12 +43,8 @@ namespace {
         }
     }
 
-    void handle_event(std::string_view& packet, ActionType& action, std::string& msg, std::error_code& ec) {
+    void handle_event(std::string_view& packet, ActionType& action, std::string& payload, std::string& msg, std::error_code& ec) {
         action = static_cast<uint8_t>(packet[0]) & 0x3F;
-        std::string payload;
-        if (packet.length() > 1) {
-            payload = std::string(packet.substr(1));
-        }
         switch (static_cast<ActionTypeEvent>(action)) {
             case ActionTypeEvent::PING:
                 ping(msg, ec);
@@ -90,34 +86,47 @@ namespace {
 namespace CommandHandler {
     void Handler(std::string_view packet, std::vector<uint8_t>& response, std::error_code& ec) {
         ActionType action = 0xFF;
+        std::string payload;
         std::string msg;
 
-        uint8_t header = 0;
-        uint8_t success_flag = 0;
-
         if (packet.empty()) {
-            action = 0xFF;
             ec = make_error_code(HandleError::EmptyMessage);
-        } else {
-            std::string payload;
-            if (packet.size() > 1) {
-                payload.assign(packet.begin() + 1, packet.end());
-            }
-            action = packet[0] & 0x3F;
-            if (static_cast<uint8_t>(packet[0]) & 0x80) {
-                handle_event(packet, action, msg, ec);
-                header |= 1 << 7;
-                success_flag = ec ? 0 : 1;
-            } else {
-                handle_request(packet, action, msg, ec);
-                success_flag = msg.empty() ? 0 : 1;
-            }
+            return;
         }
 
-        header |= success_flag << 6;
+        std::string_view working_packet = packet;
+        if (!working_packet.empty() && working_packet.back() == '\n') {
+            working_packet = working_packet.substr(0, working_packet.size() - 1);
+        }
+
+        if (working_packet.empty()) {
+            ec = make_error_code(HandleError::EmptyMessage);
+            return;
+        }
+
+        uint8_t header = working_packet[0];
+        action = header & 0x3F;
+        bool is_event = (header & 0x80) != 0;
         
-        header |= static_cast<uint8_t>(action) & 0x3F;
-        response.push_back(header);
+        if (working_packet.size() > 1) {
+            payload = std::string(working_packet.begin() + 1, working_packet.end());
+        }
+
+        uint8_t response_header = 0;
+        uint8_t success_flag = 0;
+
+        if (is_event) {
+            handle_event(working_packet, action, payload, msg, ec);
+            response_header |= 1 << 7;
+            success_flag = ec ? 0 : 1;
+        } else {
+            handle_request(working_packet, action, msg, ec);
+            success_flag = msg.empty() ? 0 : 1;
+        }
+
+        response_header |= success_flag << 6;
+        response_header |= static_cast<uint8_t>(action) & 0x3F;
+        response.push_back(response_header);
         
         if (!msg.empty()) {
             response.insert(response.end(), msg.begin(), msg.end());
