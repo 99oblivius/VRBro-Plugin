@@ -32,8 +32,7 @@ void get_current_scene(std::string& msg, handle_error& ec) {
     (void)(ec);
     obs_source_t* source = obs_frontend_get_current_scene();
     if (source) {
-        const char* id = obs_source_get_id(source);
-        msg = id ? id : "";
+        msg = obs_source_get_name(source);
         obs_source_release(source);
     } else {
         msg = "";
