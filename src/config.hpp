@@ -21,7 +21,7 @@ public:
     static config_t* GetConfigStore();
     static void OBSSaveCallback(obs_data_t* config_data, bool save, void* data);
 
-    QString ListenAddrString{ConfigConstants::DEFAULT_ADDRESS};
+    QString ListenAddrString{QString::fromUtf8(ConfigConstants::DEFAULT_ADDRESS)};
     QString ListenPortNumber{QString::number(ConfigConstants::DEFAULT_PORT)};
     std::atomic<bool> AutoBufferBool{false};
 };

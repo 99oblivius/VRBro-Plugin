@@ -8,6 +8,7 @@
 #include <obs-frontend-api.h>
 #include <obs-module.h>
 #include <util/config-file.h>
+#include <asio.hpp>
 
 #include "plugin-support.h"
 #include "vrbro.hpp"
@@ -47,7 +48,7 @@ Config::Config() {
 void Config::Load() {
     config_t* obs_config = GetConfigStore();
     if (obs_config) {
-        ListenAddrString = config_get_string(obs_config, TITLE, LISTEN_ADDR_STRING);
+        ListenAddrString = QString::fromUtf8(config_get_string(obs_config, TITLE, LISTEN_ADDR_STRING));
         ListenPortNumber = QString::number(config_get_uint(obs_config, TITLE, LISTEN_PORT_NUMBER));
         AutoBufferBool = config_get_bool(obs_config, TITLE, AUTO_BUFFER);
     }
@@ -55,39 +56,47 @@ void Config::Load() {
 
 void Config::Save() {
     config_t* obs_config = GetConfigStore();
-    if (!obs_config) {
-        return;
-    }
+    if (!obs_config) return;
 
-    // Validate and save address
+    // Skip test if already using default address
     ListenAddrString.remove(QRegularExpression("\\s+"));
-    if (!isValidAddr(ListenAddrString)) {
-        QMessageBox alertbox;
-        alertbox.setWindowTitle("VRBro.Address.Error");
-        alertbox.setText("x.x.x.x\n\nChoose a valid listening address\ne.g 0.0.0.0");
-        alertbox.exec();
-        return;
+    if (ListenAddrString != ConfigConstants::DEFAULT_ADDRESS) {
+        try {
+            asio::io_context test_context;
+            asio::ip::tcp::acceptor test_acceptor(test_context);
+            auto endpoint = asio::ip::tcp::endpoint(
+                asio::ip::make_address(ListenAddrString.toStdString()),
+                33390
+            );
+            test_acceptor.open(endpoint.protocol());
+            test_acceptor.bind(endpoint);
+            test_acceptor.close();
+            test_context.stop();
+        } catch (...) {
+            QMessageBox::StandardButton reply = QMessageBox::question(nullptr, "VRBro.Address.Error",
+                "Address cannot be used. Use default (127.0.0.1)?",
+                QMessageBox::Yes | QMessageBox::No);
+                
+            if (reply == QMessageBox::Yes) {
+                ListenAddrString = ConfigConstants::DEFAULT_ADDRESS;
+            } else {
+                return;
+            }
+        }
     }
-    config_set_string(obs_config, TITLE, LISTEN_ADDR_STRING, 
-        ListenAddrString.toUtf8().constData());
-    
-    // Validate and save port
-    if (!isValidPort(ListenPortNumber)) {
-        QMessageBox alertbox;
-        alertbox.setWindowTitle("VRBro.Port.Error");
-        alertbox.setText("1024 <-> 65535\n\nChoose a valid port number\ne.g 33390");
-        alertbox.exec();
-        return;
-    }
-    config_set_uint(obs_config, TITLE, LISTEN_PORT_NUMBER, 
-        ListenPortNumber.toULongLong());
 
-    // Save auto buffer setting
+    // Port validation
+    bool ok;
+    uint32_t port = ListenPortNumber.toUInt(&ok);
+    if (!ok || port < 1024 || port > 65535) {
+        QMessageBox::warning(nullptr, "VRBro.Port.Error", "Invalid port (use 1024-65535)");
+        return;
+    }
+
+    // Save settings
+    config_set_string(obs_config, TITLE, LISTEN_ADDR_STRING, ListenAddrString.toUtf8().constData());
+    config_set_uint(obs_config, TITLE, LISTEN_PORT_NUMBER, port);
     config_set_bool(obs_config, TITLE, AUTO_BUFFER, AutoBufferBool);
-    
-    obs_log(LOG_WARNING, "[VRBro::Config] listen: %s  port: %d", 
-        ListenAddrString.toUtf8().constData(), 
-        ListenPortNumber.toULongLong());
     
     config_save(obs_config);
     vrbro_restart_server();

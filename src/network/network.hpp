@@ -31,6 +31,6 @@ private:
     
     // ASIO components
     asio::io_context io_context_;
-    asio::ip::tcp::acceptor acceptor_;
+    asio::ip::tcp::acceptor acceptor_{io_context_};
     std::thread io_thread_;
 };
